@@ -5,46 +5,59 @@ class App extends Component {
     super(props);
 
     this.state = {
-      newItem:"",
-      list:[]
+      newItem: "",
+      list: [{ id: 1 + Math.random(), value: "test" }, { id: 1 + Math.random(), value: "test2" }]
     }
   }
 
-  updateInput(key, value){
+  updateInput(key, value) {
     //update react state
     this.setState({
       [key]: value
     });
   }
 
-  addItem(){
+  addItem() {
     //create item with uniq id
+    //{id: 1.???, value: "test"}
     const newItem = {
       id: 1 + Math.random(),
       value: this.state.newItem.slice()
     };
+    console.log(newItem)
 
     //copy of current list of items
+    //save spread of list
     const list = [...this.state.list];
 
     //add new item to list
+    //[{id: 1.???, value: "test"}, {id: 1.???, value: "test2"}]
     list.push(newItem);
+    console.log(list)
 
     //update state with new list and reset newItem input
+    //re-render component and children with new list and reset the input value to empty string
     this.setState({
       list,
-      newItem:""
+      newItem: ""
     });
   }
 
   deleteItem(id) {
     //copy current list of items
+    //save spread of list
     const list = [...this.state.list];
 
     //filter out item being deleted
+    //return elements in array that don't match the item id we provide
     const updatedList = list.filter(item => item.id !== id);
 
-    this.setState({list: updatedList});
+    //re-render component and children with new list
+    this.setState({ list: updatedList });
+  }
+
+  sendAlert() {
+    alert("you clicked a list item");
   }
 
   render() {
@@ -52,7 +65,7 @@ class App extends Component {
       <div className="App">
         <div>
           Add an Item...
-          <br/>
+          <br />
           <input
             type="text"
             placeholder="Type item here..."
@@ -64,20 +77,20 @@ class App extends Component {
           >
             Add
           </button>
-          <br/>
+          <br />
           <ul>
-          {this.state.list.map(item => {
-            return(
-              <li key={item.id}>
-                {item.value}
-                <button
-                  onClick={() => this.deleteItem(item.id)}
-                >
-                  X
+            {this.state.list.map(item => {
+              return (
+                <li key={item.id} onClick={this.sendAlert}>
+                  {item.value}
+                  <button
+                    onClick={() => this.deleteItem(item.id)}
+                  >
+                    X
                 </button>
-              </li>
-            )
-          })}
+                </li>
+              )
+            })}
           </ul>
         </div>
       </div>
